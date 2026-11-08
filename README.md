@@ -1,4 +1,26 @@
-# BlastRadius AI — V2
+# BlastRadius AI — Version 3
+
+**Live demo:** https://omerghafour.github.io/blastradius-ai/
+
+Version 3 includes a browser-based incident analyst with deterministic evidence-backed explanations of dependency paths, modeled business impacts and limitations. It requires no credentials or backend for local mode.
+
+### AI mode (optional; not yet deployed)
+
+The UI supports a separately deployed HTTPS gateway. Do not enter OpenAI API keys in the website or commit them to GitHub. Private AI mode needs an independently deployed backend, secret API key, and access controls. Until configured, use **Local / evidence engine**. This is a synthetic educational simulation—not production monitoring or verified outage prediction.
+
+### Files
+
+- `index.html` — GitHub Pages UI
+- `styles.css` — interface styling
+- `app.js` — dependency graph engine, imports and reports
+- `analyst.js` — V3 local investigation and optional gateway integration
+- `samples/` — example data
+- `tests/` — JavaScript tests
+
+---
+
+## Previous version notes
+
 
 **Live:** https://omerghafour.github.io/blastradius-ai/
 
