@@ -1,0 +1,12 @@
+const test=require('node:test');
+const assert=require('node:assert/strict');
+const {validate,parseCSV,analyze,SAMPLE}=require('../app.js');
+test('sample data validates',()=>{const m=validate(SAMPLE);assert.equal(m.nodes.length,12);assert.equal(m.edges.length,17)});
+test('CSV quoting and comma handling',()=>{const rows=parseCSV('id,label,description\na,"Alpha, Inc.","First ""test"""\n');assert.deepEqual(rows,[{id:'a',label:'Alpha, Inc.',description:'First "test"'}])});
+test('CSV rejects bad row length',()=>assert.throws(()=>parseCSV('id,label\na\n'),/columns/));
+test('reject unknown dependent node',()=>assert.throws(()=>validate({nodes:[{id:'a'}],edges:[{from:'a',to:'b'}]}),/unknown/));
+test('reject duplicate nodes',()=>assert.throws(()=>validate({nodes:[{id:'a'},{id:'a'}],edges:[]}),/Duplicate/));
+test('reject negative exposures',()=>assert.throws(()=>validate({nodes:[{id:'a',exposure:-100}],edges:[]}),/non-negative/));
+test('detect all downstream systems',()=>{const r=analyze('network');assert.equal(r.reached.size,12);assert.equal(r.services.length,6);assert.equal(r.users,1560);assert.equal(r.exposure,24900)});
+test('select isolated effect origin',()=>{const r=analyze('payments');assert.deepEqual([...r.reached],['payments']);assert.equal(r.services.length,1);assert.deepEqual(r.paths.get('payments'),['payments'])});
+test('shortest paths to affected business service',()=>{const r=analyze('identity');assert.deepEqual(r.paths.get('support'),['identity','support']);assert.equal(r.services.length,3)});

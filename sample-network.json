@@ -1,0 +1,17 @@
+{
+  "name": "Harbor City Logistics (fictional)",
+  "nodes": [
+    { "id": "wan", "label": "WAN Router", "type": "infrastructure", "description": "Connects remote warehouses" },
+    { "id": "auth", "label": "Access Control", "type": "application", "description": "Authenticates warehouse staff" },
+    { "id": "inventory", "label": "Inventory Database", "type": "data", "description": "Stock quantities by warehouse" },
+    { "id": "dispatch", "label": "Dispatch Platform", "type": "business", "users": 120, "exposure": 3400, "description": "Dispatch and delivery operations" },
+    { "id": "tracking", "label": "Customer Tracking", "type": "business", "users": 450, "exposure": 1700, "description": "Customer shipment tracking" }
+  ],
+  "edges": [
+    { "from": "wan", "to": "auth" },
+    { "from": "wan", "to": "inventory" },
+    { "from": "auth", "to": "dispatch" },
+    { "from": "inventory", "to": "dispatch" },
+    { "from": "dispatch", "to": "tracking" }
+  ]
+}

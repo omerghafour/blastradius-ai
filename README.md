@@ -1,48 +1,89 @@
-# BlastRadius AI — Operational Dependency Simulator
+# BlastRadius AI — V2
 
-A browser-based proof of concept showing how outages propagate through an enterprise dependency graph. 
-**Live demo:** After enabling GitHub Pages, add your published site URL here.
+**Live:** https://omerghafour.github.io/blastradius-ai/
 
-## What it does
+An interactive, browser-only dependency intelligence simulator for solution architecture and prototyping portfolios. This is a **deterministic graph-analysis demo**, not an AI model or incident monitoring product.
 
-- Choose among three simulated failure origins (identity provider, customer database, core network).
-- Visualize affected infrastructure and services on an interactive SVG dependency graph.
-- See the impact paths and simulated user/business exposure.
-- Click nodes to inspect how they relate to the incident.
+## Features
 
-## Run it
+- Import your own **JSON model** or select **two CSV files together** (`assets.csv` and `dependencies.csv`).
+- Explore a clickable, directional dependency graph; search systems and zoom in/out.
+- Simulate failures from **any node** and visualize possible cascading effects.
+- Inspect each node and see its **shortest explanatory dependency path** from the failed origin.
+- Export a **self-contained HTML impact report** with methods and assumptions; print or save the report as PDF from the browser.
+- No backend, account, dependencies, external API requests, or uploaded data storage. Files are processed within the browser. Avoid sharing confidential information in screenshots or exported reports.
 
-Open `index.html` in a modern browser. No build, account, API keys, backend, or dependencies are required.
+## Publish on your existing GitHub Pages site
 
-## Publish with GitHub Pages
+1. Download and extract the V2 ZIP.
+2. Open https://github.com/omerghafour/blastradius-ai and choose **Add file → Upload files**.
+3. Upload `index.html`, `app.js`, `styles.css`, `.nojekyll`, and the **samples** folder into the repository root; also replace `README.md`.
+4. Commit changes to `main`. GitHub Pages (branch: `main`, folder: `/ (root)`) will publish the update at https://omerghafour.github.io/blastradius-ai/ .
+5. Hard-refresh the website if your browser shows the old version.
 
-1. Create a **public** GitHub repository named `blastradius-ai`.
-2. Upload the **contents of this folder** (`index.html`, `README.md`, `.nojekyll`) to the repository root. Do **not** upload the ZIP itself.
-3. In GitHub, choose **Settings → Pages**.
-4. Under **Build and deployment**, select **Deploy from a branch**.
-5. Select `main` and `/(root)`, then **Save**.
-6. Your site URL will normally be `https://YOUR-USERNAME.github.io/blastradius-ai/` (replace YOUR-USERNAME).
+## Run locally
 
-## Architecture
+Open `index.html` in a browser for the built-in dataset. Some browsers restrict local file access, but the import control works because it reads user-selected files. For a local HTTP server:
 
-`Static HTML + CSS + JavaScript → directed dependency graph → reachability traversal → impact summary + SVG visualization`
+```bash
+python3 -m http.server 8000
+```
 
-The model uses eight fictional system nodes and predefined directed dependencies. Impact counts and estimated financial exposure are **illustrative assumptions**, not predictions or measured outcomes. No external services are contacted and no user data is collected by the app.
+Then visit http://localhost:8000.
 
-## Suggested next improvements
+## Data model
 
-- Import user-provided CSV/JSON of assets and dependencies.
-- Add graph editing and a scenario builder.
-- Move impact logic into a tested Python/FastAPI service.
-- Add an evidence-backed explanation panel; distinguish AI commentary from deterministic results.
-- Document security assumptions and add automated tests.
+JSON:
 
-## Portfolio positioning
+```json
+{
+  "name": "Example environment",
+  "nodes": [
+    {"id":"db","label":"Database","type":"data"},
+    {"id":"portal","label":"Customer Portal","type":"business","users":100,"exposure":2500}
+  ],
+  "edges": [{"from":"db","to":"portal"}]
+}
+```
 
-**Problem:** Teams lack visibility into downstream consequences of shared-service outages.
+- `id` unique string, `label` display name, `type` one of `infrastructure`, `data`, `application`, `business`.
+- Optional: `description`, `users`, `exposure` (non-negative numbers; user-count and EUR per hour). Only **business** nodes contribute to business metric totals.
+- Direction: **A → B means B depends on A**. A failure at A can propagate to B.
+- CSV asset columns: `id,label,type,users,exposure,description` (optional fields may be blank).
+- CSV edge columns: `from,to`.
+- Maximum 250 nodes, 1,500 edges, and 3 MB per file to keep the browser responsive.
 
-**Approach:** Represent system dependencies as a graph and calculate downstream reachability when a node fails.
+## Algorithm and limitations
 
-**Deliverable:** An interactive, explainable customer demo designed for solution discovery and PoC discussions.
+A breadth-first search finds reachable nodes and reconstructs **one shortest path** from the selected failure origin. Cyclic graphs are supported for traversal (the visual layout is only approximate). The model treats dependencies as unconditional, so these are *potential* impacts, not observed outages. It does not model failover, redundancy, probability, recovery times, or partial degradation. User counts may overlap between services and are summed without deduplication. Exposure values are illustrative assumptions, not forecasts.
 
-> Note: “AI” is the project brand; this initial version uses graph algorithms, **not** a trained machine-learning model or LLM.
+## Tests
+
+With Node.js installed:
+
+```bash
+node --test tests/graph.test.js
+```
+
+## Project structure
+
+```text
+index.html             Web application
+styles.css             Responsive dark-mode interface
+app.js                 Import, graph simulation, path reasoning, HTML reporting
+samples/               Synthetic JSON and CSV input files
+README.md              Usage and architecture
+.nojekyll              GitHub Pages static publishing
+```
+
+### Architecture
+
+`Local CSV / JSON → validation → in-memory graph → BFS impact analysis → SVG visualization + explanations → downloadable report`
+
+## Future roadmap
+
+- V3: optional evidence-grounded AI commentary and recommendation assistant via a secure backend.
+- V4: FastAPI ingestion APIs, persistent graph storage, integration tests, Docker/Kubernetes.
+- V5: Authorized monitoring API connectors and real events with appropriately scoped access.
+
+**Portfolio note:** All bundled example organizations, dependencies, user counts, and exposure values are fictional.

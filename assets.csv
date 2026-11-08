@@ -1,0 +1,6 @@
+id,label,type,users,exposure,description
+network,Core Network,infrastructure,0,0,Shared data center connectivity
+identity,Identity Provider,application,0,0,Enterprise SSO service
+orders,Orders API,application,0,0,Order management API
+checkout,Checkout,business,320,8200,Customer checkout flow
+support,Support Center,business,75,1200,Customer support workflow
