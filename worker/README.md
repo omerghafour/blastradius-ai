@@ -28,11 +28,11 @@ Use a long random access code (at least 24 random characters). Check free-tier q
 
 ## How it works
 
-- `POST /analyze`: validates the caller origin, private demo access code and bounded JSON graph evidence, then calls the Google Gemini Gemini generateContent API.
+- `POST /analyze`: validates the caller origin, private demo access code and bounded JSON graph evidence, then calls the Gemini generateContent API.
 - `GET /health`: returns a non-secret service status.
-- The API key and access code are stored as Cloudflare Worker secrets.
+- The API key and access code must be stored as Cloudflare Worker secrets.
 - CORS permits the `https://omerghafour.github.io` browser origin, but CORS is not authentication. The secret access code is required. Configure an additional Cloudflare WAF rate limit to reduce credential guessing and cost abuse.
-- Only fictional or properly authorized data may be sent. The dataset travels to the Gemini API for analysis; the local-mode engine makes no external requests.
+- Only fictional or properly authorized data may be sent. The dataset travels to the Gemini API for analysis; free-tier data may be used to improve Google's products. The local-mode engine makes no external requests.
 - The model can explain only evidence submitted by the simulator. It does not independently verify real outages, redundancy, or financial losses.
 
 ## Troubleshooting
