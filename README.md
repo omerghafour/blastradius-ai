@@ -4,6 +4,14 @@
 
 Version 3 includes a browser-based incident analyst with deterministic evidence-backed explanations of dependency paths, modeled business impacts and limitations. It requires no credentials or backend for local mode.
 
+## Enable real AI (secure backend)
+
+The website includes a real OpenAI-backed investigation mode, but it only becomes active after you deploy the private Cloudflare Worker.
+
+**Deployment and security instructions:** [worker/README.md](worker/README.md)
+
+Never put an OpenAI API key in GitHub Pages code. This backend is not deployed by GitHub Pages automatically, and it requires a separate Cloudflare account, API key, and private access code. Local analysis continues to work without any paid API.
+
 ### AI mode (optional; not yet deployed)
 
 The UI supports a separately deployed HTTPS gateway. Do not enter OpenAI API keys in the website or commit them to GitHub. Private AI mode needs an independently deployed backend, secret API key, and access controls. Until configured, use **Local / evidence engine**. This is a synthetic educational simulation—not production monitoring or verified outage prediction.
