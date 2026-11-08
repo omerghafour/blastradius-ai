@@ -1,7 +1,6 @@
 # BlastRadius AI — Operational Dependency Simulator
 
-A browser-based proof of concept showing how outages propagate through an enterprise dependency graph. Built as a portfolio demo for solution architecture and technical prototyping.
-
+A browser-based proof of concept showing how outages propagate through an enterprise dependency graph. 
 **Live demo:** After enabling GitHub Pages, add your published site URL here.
 
 ## What it does
