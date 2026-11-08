@@ -8,12 +8,13 @@
   <title>BlastRadius AI — Dependency Intelligence Lab</title>
   <link rel="stylesheet" href="styles.css" />
   <script src="app.js" defer></script>
+  <script src="analyst.js" defer></script>
 </head>
 <body>
 <div class="app-shell">
   <header class="topbar">
     <div class="brand"><span class="brand-icon" aria-hidden="true">◎</span><div><strong>BLASTRADIUS<span class="brand-accent"> AI</span></strong><small>DEPENDENCY INTELLIGENCE LAB</small></div></div>
-    <div class="top-actions"><span class="status"><span class="status-dot"></span> V2 · BROWSER-ONLY</span><a class="link-button" href="https://github.com/omerghafour/blastradius-ai" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div>
+    <div class="top-actions"><span class="status"><span class="status-dot"></span> V3 · AI-READY</span><a class="link-button" href="https://github.com/omerghafour/blastradius-ai" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div>
   </header>
   <section class="hero"><div class="eyebrow">INTELLIGENCE LAB / EXPERIMENT 001</div><div class="hero-row"><div><h1>See the failure <em>before it spreads.</em></h1><p>Connect fragmented infrastructure data. Simulate a failure in any system. Reveal downstream impact and trace every finding back to the dependency graph.</p></div><div class="hero-chip">◈ <span>SIMULATION MODE<br><small>Fictional data · explainable results</small></span></div></div></section>
   <div class="workspace">
@@ -36,10 +37,27 @@
       <section class="panel graph-panel"><div class="section-line graph-header"><div><h2>Dependency intelligence graph</h2><p class="help">Select a node to investigate it. Arrows show service dependencies.</p></div><div class="graph-tools"><span class="mini-tag" id="graph-status">READY</span><button id="zoom-out" class="icon-btn" title="Zoom out" aria-label="Zoom out">−</button><button id="zoom-in" class="icon-btn" title="Zoom in" aria-label="Zoom in">+</button><button id="zoom-reset" class="icon-btn" title="Reset zoom" aria-label="Reset zoom">⤢</button></div></div>
         <div class="graph-surface"><svg id="graph" role="img" aria-label="Interactive directed graph of systems and their dependencies"></svg><div class="graph-overlay"><span><i class="legend-dot source"></i> Failed system</span><span><i class="legend-dot affected"></i> Affected</span><span><i class="legend-dot normal"></i> Healthy / unknown</span></div></div>
         <div class="graph-footer"><span id="graph-count">—</span><span>Deterministic graph traversal · No external calls</span></div></section>
+      <section class="panel ai-panel" id="ai-panel">
+        <div class="section-line ai-panel-header"><div><div class="eyebrow">04 / INTELLIGENCE ASSISTANT</div><h2>Ask the incident analyst</h2><p class="help">Answers grounded in the simulated dependency paths. Optional secure AI backend for natural-language analysis.</p></div><span id="analyst-mode" class="mini-tag">LOCAL ANALYST</span></div>
+        <div class="analyst-layout">
+          <div class="analyst-main">
+            <div class="quick-prompts" aria-label="Suggested investigation questions">
+              <button type="button" class="prompt-chip" data-question="What is the blast radius of this failure?">Impact overview</button>
+              <button type="button" class="prompt-chip" data-question="Why is the customer portal affected?">Explain a path</button>
+              <button type="button" class="prompt-chip" data-question="Which business services should be reviewed first?">Triage priorities</button>
+              <button type="button" class="prompt-chip" data-question="What are the limits and assumptions of this simulation?">Assumptions</button>
+            </div>
+            <div id="analyst-transcript" class="analyst-transcript" aria-live="polite"><div class="analyst-bubble system">Run a failure simulation, then ask about the modeled impact. Local analysis works without any API key.</div></div>
+            <form id="analyst-form" class="analyst-form"><label class="sr-only" for="analyst-question">Ask the incident analyst</label><input id="analyst-question" class="text-input" maxlength="500" placeholder="Ask about the incident or a dependency…" autocomplete="off" required /><button id="analyst-send" class="btn btn-primary" type="submit">Analyze →</button></form>
+            <div class="analyst-note" id="analyst-note" role="status" aria-live="polite">Local mode: deterministic graph analysis; no data leaves your browser.</div>
+          </div>
+          <aside class="analyst-settings"><h3>Analysis mode</h3><label class="radio-row"><input type="radio" name="analyst-mode-select" value="local" checked /> Local / evidence engine</label><label class="radio-row"><input type="radio" name="analyst-mode-select" value="ai" /> AI via secure gateway</label><label class="form-label" for="gateway-url">Gateway URL</label><input id="gateway-url" class="text-input" type="url" placeholder="https://your-worker.workers.dev" autocomplete="url" /><label class="form-label" for="gateway-passcode">Private demo access code</label><input id="gateway-passcode" class="text-input" type="password" placeholder="Required for private AI demo" autocomplete="off" /><label class="consent-row"><input type="checkbox" id="ai-consent" /> I understand model context and my question will be sent to the configured gateway and its AI provider.</label><p class="input-hint">Never enter an OpenAI API key here. Access codes are kept only in memory. Only send synthetic or authorized data.</p></aside>
+        </div>
+      </section>
       <div class="details-grid"><section class="panel"><div class="section-line"><h2>Impact investigation</h2><span class="mini-tag">EVIDENCE</span></div><div id="investigation" class="empty-state">Choose a failure origin and run the simulation to reveal exactly which dependencies propagate the impact.</div></section><section class="panel"><div class="section-line"><h2>Node inspector</h2><span class="mini-tag">DETAILS</span></div><div id="inspector" class="empty-state">Select any node in the graph to inspect its relationships, description, and failure path.</div></section></div>
     </main>
   </div>
-  <footer><div><strong>BlastRadius AI</strong> · Solution Architecture Portfolio · Version 2.0</div><div>Educational simulation only. No real incident detection, AI model, or production monitoring is included.</div></footer>
+  <footer><div><strong>BlastRadius AI</strong> · Solution Architecture Portfolio · Version 3.0</div><div>Educational simulation only. Optional AI commentary uses a separately deployed secure gateway. No production monitoring or real incident detection.</div></footer>
 </div>
 </body>
 </html>
