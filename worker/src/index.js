@@ -4,7 +4,7 @@
  * Set GEMINI_API_KEY and DEMO_ACCESS_CODE using Cloudflare secrets.
  */
 const ALLOWED_ORIGIN = 'https://omerghafour.github.io';
-const MODEL = 'gemini-2.5-flash-lite';
+const MODEL = 'gemini-3.1-flash-lite';
 const MAX_BODY_BYTES = 48_000;
 const MAX_CONTEXT_NODES = 250;
 const MAX_CONTEXT_EDGES = 1500;
@@ -56,7 +56,18 @@ export default {
   let response;
   try{response=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+MODEL+':generateContent',{method:'POST',headers:{'x-goog-api-key':env.GEMINI_API_KEY,'Content-Type':'application/json'},body:JSON.stringify({systemInstruction:{parts:[{text:INSTRUCTIONS}]},contents:[{role:'user',parts:[{text:modelInput}]}],generationConfig:{maxOutputTokens:1000,temperature:0.2}})});}
   catch{return json({error:'Gemini provider could not be reached.'},502)}
-  if(!response.ok){return json({error:response.status===429?'AI usage limit reached. Try again later.':'Gemini provider returned an error.'},response.status===429?429:502);}
+  if(!response.ok){
+    let info={};try{info=await response.json()}catch{}
+    const providerStatus=String(info?.error?.status||'UNKNOWN').slice(0,64);
+    const reason=(info?.error?.details||[]).map(x=>x?.reason).find(x=>typeof x==='string')||'';
+    let message='Gemini request failed. Check your Google AI Studio project and model access.';
+    if(response.status===400)message=providerStatus==='FAILED_PRECONDITION'?'Gemini free-tier may be unavailable for this project or region. Check Google AI Studio billing/access.':'Gemini rejected the request; check model access and API key validity.';
+    if(response.status===401||response.status===403)message='Gemini API key denied. Check Gemini API permissions and key restrictions in Google AI Studio.';
+    if(response.status===404)message='Selected Gemini model is unavailable to this API key/project. Check the Models section in Google AI Studio.';
+    if(response.status===429)message='Gemini quota or rate limit exceeded. Check your project quota in Google AI Studio.';
+    if(response.status>=500)message='Gemini service is temporarily unavailable; retry later.';
+    return json({error:message,providerCode:response.status,providerStatus,providerReason:String(reason).slice(0,80)},response.status===429?429:502);
+  }
   let result;try{result=await response.json()}catch{return json({error:'Gemini provider response could not be read.'},502)}
   const answer=extractAnswer(result);
   if(!answer)return json({error:'The AI returned no usable text. Try a shorter question.'},502);
