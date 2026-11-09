@@ -9,12 +9,13 @@
   <link rel="stylesheet" href="styles.css" />
   <script src="app.js" defer></script>
   <script src="analyst.js" defer></script>
+  <script src="report.js" defer></script>
 </head>
 <body>
 <div class="app-shell">
   <header class="topbar">
     <div class="brand"><span class="brand-icon" aria-hidden="true">◎</span><div><strong>BLASTRADIUS<span class="brand-accent"> AI</span></strong><small>DEPENDENCY INTELLIGENCE LAB</small></div></div>
-    <div class="top-actions"><span class="status"><span class="status-dot"></span> V3 · AI-READY</span><a class="link-button" href="https://github.com/omerghafour/blastradius-ai" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div>
+    <div class="top-actions"><span class="status"><span class="status-dot"></span> V4 · REPORT INTELLIGENCE</span><a class="link-button" href="https://github.com/omerghafour/blastradius-ai" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div>
   </header>
   <section class="hero"><div class="eyebrow">INTELLIGENCE LAB / EXPERIMENT 001</div><div class="hero-row"><div><h1>See the failure <em>before it spreads.</em></h1><p>Connect fragmented infrastructure data. Simulate a failure in any system. Reveal downstream impact and trace every finding back to the dependency graph.</p></div><div class="hero-chip">◈ <span>SIMULATION MODE<br><small>Fictional data · explainable results</small></span></div></div></section>
   <div class="workspace">
@@ -51,13 +52,29 @@
             <form id="analyst-form" class="analyst-form"><label class="sr-only" for="analyst-question">Ask the incident analyst</label><input id="analyst-question" class="text-input" maxlength="500" placeholder="Ask about the incident or a dependency…" autocomplete="off" required /><button id="analyst-send" class="btn btn-primary" type="submit">Analyze →</button></form>
             <div class="analyst-note" id="analyst-note" role="status" aria-live="polite">Local mode: deterministic graph analysis; no data leaves your browser.</div>
           </div>
-          <aside class="analyst-settings"><h3>Analysis mode</h3><label class="radio-row"><input type="radio" name="analyst-mode-select" value="local" checked /> Local / evidence engine</label><label class="radio-row"><input type="radio" name="analyst-mode-select" value="ai" /> AI via secure gateway</label><label class="form-label" for="gateway-url">Gateway URL</label><input id="gateway-url" class="text-input" type="url" placeholder="https://your-worker.workers.dev" autocomplete="url" /><label class="form-label" for="gateway-passcode">Private demo access code</label><input id="gateway-passcode" class="text-input" type="password" placeholder="Required for private AI demo" autocomplete="off" /><label class="consent-row"><input type="checkbox" id="ai-consent" /> I understand model context and my question will be sent to the configured gateway and its AI provider.</label><p class="input-hint">Never enter an OpenAI API key here. Access codes are kept only in memory. Only send synthetic or authorized data.</p></aside>
+          <aside class="analyst-settings"><h3>Analysis mode</h3><label class="radio-row"><input type="radio" name="analyst-mode-select" value="local" checked /> Local / evidence engine</label><label class="radio-row"><input type="radio" name="analyst-mode-select" value="ai" /> AI via secure gateway</label><label class="form-label" for="gateway-url">Gateway URL</label><input id="gateway-url" class="text-input" type="url" placeholder="https://your-worker.workers.dev" autocomplete="url" /><label class="form-label" for="gateway-passcode">Private demo access code</label><input id="gateway-passcode" class="text-input" type="password" placeholder="Required for private AI demo" autocomplete="off" /><label class="consent-row"><input type="checkbox" id="ai-consent" /> I understand model context and my question will be sent to the configured gateway and its AI provider.</label><p class="input-hint">Never enter your Gemini API key here. Access codes are kept only in memory. Only send synthetic or authorized data.</p></aside>
+        </div>
+      </section>
+      <section class="panel report-panel" id="report-panel">
+        <div class="section-line report-header">
+          <div><div class="eyebrow">05 / INTELLIGENCE REPORTING</div><h2>Investigation report studio</h2><p class="help">Combine calculated impact evidence with a Gemini-generated investigation narrative. Export a professional standalone report for stakeholders.</p></div>
+          <span id="report-status" class="mini-tag">RUN A SIMULATION</span>
+        </div>
+        <div class="report-actions">
+          <button id="report-local" type="button" class="btn btn-secondary">◫ Build evidence report</button>
+          <button id="report-ai" type="button" class="btn btn-primary">✦ Generate with Gemini</button>
+          <span class="report-progress" id="report-progress" role="status" aria-live="polite">Run a simulation, then generate a report.</span>
+        </div>
+        <div id="report-preview" class="report-preview"><div class="report-empty">Run a simulation to build an investigation report.</div></div>
+        <div class="report-toolbar">
+          <div class="input-hint">Evidence and metrics are computed locally. Gemini commentary is optional and should be checked against the evidence register. For AI mode, use your existing gateway settings and consent above.</div>
+          <div class="report-export-actions"><button id="report-print" type="button" class="btn btn-secondary" disabled>Print / PDF</button><button id="report-download" type="button" class="btn btn-primary" disabled>↓ Export report HTML</button></div>
         </div>
       </section>
       <div class="details-grid"><section class="panel"><div class="section-line"><h2>Impact investigation</h2><span class="mini-tag">EVIDENCE</span></div><div id="investigation" class="empty-state">Choose a failure origin and run the simulation to reveal exactly which dependencies propagate the impact.</div></section><section class="panel"><div class="section-line"><h2>Node inspector</h2><span class="mini-tag">DETAILS</span></div><div id="inspector" class="empty-state">Select any node in the graph to inspect its relationships, description, and failure path.</div></section></div>
     </main>
   </div>
-  <footer><div><strong>BlastRadius AI</strong> · Solution Architecture Portfolio · Version 3.0</div><div>Educational simulation only. Optional AI commentary uses a separately deployed secure gateway. No production monitoring or real incident detection.</div></footer>
+  <footer><div><strong>BlastRadius AI</strong> · Solution Architecture Portfolio · Version 4.0</div><div>Educational simulation only. Optional AI commentary uses a separately deployed secure gateway. No production monitoring or real incident detection.</div></footer>
 </div>
 </body>
 </html>
