@@ -79,7 +79,7 @@
  async function run(useAI){
    if(busy)return;const e=evidence();if(!e){setStatus('Run a failure simulation first.');return;}
    busy=true;byId('report-local').disabled=true;byId('report-ai').disabled=true;report=reportObject(e,'','local');render();setStatus('Preparing evidence register…');
-   if(useAI){try{setStatus('Requesting Gemini narrative based on modeled evidence…');const reply=await generateAI(e);if(keyOf(evidence())!==keyOf(e)){report=null;render();setStatus('Simulation changed; discard the earlier AI response and generate again.');return;}report=reportObject(e,reply,'ai');setStatus('AI-assisted report generated. Review the narrative against the evidence register.')}catch(err){report=reportObject(e,'','local',err.message);setStatus('Gemini unavailable; evidence-only report is ready. '+err.message)}}
+   if(useAI){try{setStatus('Requesting Gemini narrative based on modeled evidence…');const reply=await generateAI(e);if(keyOf(evidence())!==keyOf(e)){report=null;setStatus('Simulation changed; the earlier AI response was discarded. Generate a fresh report.');}else{report=reportObject(e,reply,'ai');setStatus('AI-assisted report generated. Review the narrative against the evidence register.')}}catch(err){if(keyOf(evidence())!==keyOf(e)){report=null;setStatus('Simulation changed. Generate a report for the new scenario.');}else{report=reportObject(e,'','local',err.message);setStatus('Gemini unavailable; evidence-only report is ready. '+err.message)}}}
    else setStatus('Evidence-only report ready. You can download or print it.');
    busy=false;byId('report-local').disabled=false;byId('report-ai').disabled=false;render();
  }
