@@ -47,6 +47,12 @@ Use a long random access code (at least 24 random characters). Check free-tier q
 
 ## Gemini model and free tier
 
-The Worker uses `gemini-2.5-flash-lite`. Check whether the model is available to your specific Gemini API project and region. Free-tier limits are subject to change, and Google may use free-tier prompts and responses to improve products. Use synthetic portfolio data only.
+The Worker uses `gemini-3.1-flash-lite`. Check whether the model is available to your specific Gemini API project and region. Free-tier limits are subject to change, and Google may use free-tier prompts and responses to improve products. Use synthetic portfolio data only.
 
 If the Worker has already been deployed, update the code with `npx wrangler deploy` after pulling the latest GitHub changes. The secrets must be configured in Cloudflare Workers, **not** in this repository or in the browser.
+
+## Important for deployments created with Cloudflare's browser editor
+
+Changing the GitHub file does **not** automatically update a Worker created through Cloudflare's Hello World editor. Open your Worker in Cloudflare Dashboard → **Edit Code**, replace its source with the latest [src/index.js](src/index.js) from GitHub, then click **Deploy**. Your existing Cloudflare secrets remain configured on the Worker.
+
+If the AI gateway fails after redeployment, the UI now identifies the Gemini status and HTTP error category without revealing secret values. Check AI Studio for model availability, key restrictions, quotas and billing eligibility.
